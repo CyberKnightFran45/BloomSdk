@@ -108,15 +108,15 @@ int blocksPerRow = (newWidth + tileSize - 1) / tileSize;
 
 for(int i = 0; i < height; i++)
 {
-int blockY = i / tileSize;
+int col = i / tileSize;
 int inBlockY = i % tileSize;
 
 for(int j = 0; j < newWidth; j++)
 {
-int blockX = j / tileSize;
+int row = j / tileSize;
 int inBlockX = j % tileSize;
 
-int blockIndex = blockY * blocksPerRow + blockX;
+int blockIndex = col * blocksPerRow + row;
 int pixelIndexInBlock = inBlockY * tileSize + inBlockX;
 
 int dstIndex = blockIndex * tileSize * tileSize + pixelIndexInBlock;
@@ -255,15 +255,15 @@ int blocksPerRow = (width + tileSize - 1) / tileSize;
 
 for(int i = 0; i < height; i++)
 {
-int blockY = i / tileSize;
+int col = i / tileSize;
 int inBlockY = i % tileSize;
 
 for(int j = 0; j < width; j++)
 {
-int blockX = j / tileSize;
+int row = j / tileSize;
 int inBlockX = j % tileSize;
 
-int blockIndex = blockY * blocksPerRow + blockX;
+int blockIndex = col * blocksPerRow + row;
 int pixelIndexInBlock = inBlockY * tileSize + inBlockX;
 int srcIndex = blockIndex * tileSize * tileSize + pixelIndexInBlock;
 

@@ -38,25 +38,25 @@ var colorInfo = cOwner.AsSpan();
 
 Span<TextureColor> block = stackalloc TextureColor[16];
 
-for(int blockY = 0; blockY < blocksPerCol; blockY++)
+for(int col = 0; col < blocksPerCol; col++)
 {
 
-for(int blockX = 0; blockX < blocksPerRow; blockX++)
+for(int row = 0; row < blocksPerRow; row++)
 {
 
 for(int i = 0; i < TILE_SIZE; i++)
 
 for(int j = 0; j < TILE_SIZE; j++)
 {
-int srcX = blockX * TILE_SIZE + j;
-int srcY = blockY * TILE_SIZE + i;
+int srcX = row * TILE_SIZE + j;
+int srcY = col * TILE_SIZE + i;
 
 bool shouldCopy = srcX < width && srcY < height;
 
 block[i * TILE_SIZE + j] = shouldCopy ? pixels[srcY * width + srcX] : default;
 }
 
-colorInfo[blockY * blocksPerRow + blockX] = encodeFunc(block);
+colorInfo[col * blocksPerRow + row] = encodeFunc(block);
 }
 
 }
@@ -103,20 +103,20 @@ TraceLogger.WriteActionStart("Writing pixels...");
 
 Span<TextureColor> block = stackalloc TextureColor[16];
 
-for(int blockY = 0; blockY < blocksPerCol; blockY++)
+for(int col = 0; col < blocksPerCol; col++)
 {
 
-for(int blockX = 0; blockX < blocksPerRow; blockX++)
+for(int row = 0; row < blocksPerRow; row++)
 {
-int blockIndex = blockY * blocksPerRow + blockX;
+int blockIndex = col * blocksPerRow + row;
 decodeFunc(colorInfo[blockIndex], block);
 
 for(int i = 0; i < TILE_SIZE; i++)
 
 for (int j = 0; j < TILE_SIZE; j++)
 {
-int dstX = blockX * TILE_SIZE + j;
-int dstY = blockY * TILE_SIZE + i;
+int dstX = row * TILE_SIZE + j;
+int dstY = col * TILE_SIZE + i;
 
 if(dstX < width && dstY < height)
 pixels[dstY * width + dstX] = block[i * TILE_SIZE + j];

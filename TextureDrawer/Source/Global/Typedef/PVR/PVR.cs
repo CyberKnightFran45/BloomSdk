@@ -93,20 +93,20 @@ return TextureHelper.AdjustSize(ref width, ref height);
 
 // Calculate BoundingBox
 
-private static void CalculateBoundingBox(TextureColor* pixels, int width, int blockX, int blockY,
-										 int blockWidth, out TextureColor16 min, out TextureColor16 max)
+private static void GetBounds(TextureColor* pixels, int width, int row, int col,
+							  int blockWidth, out TextureColor16 min, out TextureColor16 max)
 {
 byte minR = 255, minG = minR, minB = minG, minA = minG;
 byte maxR = 0, maxG = maxR, maxB = maxG, maxA = maxB;
 
-int start = blockY * WORD_HEIGHT * width + (blockX * blockWidth);
+int start = col * WORD_HEIGHT * width + (row * blockWidth);
 
-for(int row = 0; row < WORD_HEIGHT; row++)
+for(int y = 0; y < WORD_HEIGHT; y++)
 {
 
-for(int col = 0; col < blockWidth; col++)
+for(int x = 0; x < blockWidth; x++)
 {
-var px = pixels[start + row * width + col];
+var px = pixels[start + y * width + x];
 
 minR = Math.Min(minR, px.Red);
 minG = Math.Min(minG, px.Green);
@@ -138,7 +138,7 @@ for(int row = 0; row < blocksPerRow; row++)
 
 for(int col = 0; col < blocksPerCol; col++)
 {
-CalculateBoundingBox(pixels, width, col, row, blockWidth, out var min, out var max);
+GetBounds(pixels, width, col, row, blockWidth, out var min, out var max);
 
 PVRPacket packet = new();
 
@@ -200,8 +200,8 @@ return GetFactor(c0, c1, c2, c3, factors);
 // Get Pixel Modulation
 
 private static void GetPxMod(Span<PVRPacket> packets, TextureColor* pixels, int width,
-                             int x0, int x1, int y0, int y1, int dataOffset, int px,
-							 int py, int factorIndex, bool is2BPP, bool useAlpha,
+                             int x0, int x1, int y0, int y1, int dataOffset, int pX,
+							 int pY, int factorIndex, bool is2BPP, bool useAlpha,
 							 ref uint modulationData)
 {
 var factors = BILINEAR_FACTORS[factorIndex];
@@ -219,7 +219,7 @@ var p3 = packets[mortonIdx3];
 var ca = GetFactorA(p0, p1, p2, p3, factors, useAlpha);
 var cb = GetFactorB(p0, p1, p2, p3, factors, useAlpha);
 
-var pxColor = pixels[dataOffset + py * width + px];
+var pxColor = pixels[dataOffset + pY * width + pX];
 
 int pR = pxColor.Red << 4;
 int pG = pxColor.Green << 4;
@@ -245,7 +245,7 @@ modValue++;
 if(projection > 13 * lengthSquared)
 modValue++;
 
-int offset = is2BPP ? PxOffset2BPP[px, py] : PxOffset4BPP[px, py];
+int offset = is2BPP ? PxOffset2BPP[pX, pY] : PxOffset4BPP[pX, pY];
 uint mask = is2BPP ? 0b11u : 0xFu;
 
 modulationData |= (modValue & (mask) ) << offset;
@@ -254,26 +254,26 @@ modulationData |= (modValue & (mask) ) << offset;
 // Calculate Block Modulation
 
 private static uint GetBlockMod(Span<PVRPacket> packets, TextureColor* pixels, int width,
-								int blocksPerCol, int blocksPerRow, int blockWidth, int bx, int by,
+								int blocksPerCol, int blocksPerRow, int blockWidth, int bX, int bY,
                                 bool is2BPP, bool useAlpha)
 {
 uint modulationData = 0;
 int factorIndex = 0;
 
-int dataOffset = by * WORD_HEIGHT * width + (bx * blockWidth);
+int dataOffset = bY * WORD_HEIGHT * width + (bX * blockWidth);
 
-for(int py = 0; py < WORD_HEIGHT; py++)
+for(int pY = 0; pY < WORD_HEIGHT; pY++)
 {
-int y0 = (by + ( (py < 2) ? -1 : 0) + blocksPerRow) % blocksPerRow;
+int y0 = (bY + ( (pY < 2) ? -1 : 0) + blocksPerRow) % blocksPerRow;
 int y1 = (y0 + 1) % blocksPerRow;
 
-for(int px = 0; px < blockWidth; px++)
+for(int pX = 0; pX < blockWidth; pX++)
 {
-int x0 = (bx + ( (px < (blockWidth / 2) ) ? -1 : 0) + blocksPerCol) % blocksPerCol;
+int x0 = (bX + ( (pX < (blockWidth / 2) ) ? -1 : 0) + blocksPerCol) % blocksPerCol;
 int x1 = (x0 + 1) % blocksPerCol;
 
 GetPxMod(packets, pixels, width, x0, x1, y0, y1, dataOffset,
-         px, py, factorIndex, is2BPP, useAlpha, ref modulationData);
+         pX, pY, factorIndex, is2BPP, useAlpha, ref modulationData);
 
 factorIndex++;
 }

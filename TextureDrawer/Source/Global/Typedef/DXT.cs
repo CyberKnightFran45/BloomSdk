@@ -231,20 +231,20 @@ var colorInfo = cOwner.AsSpan();
 Span<TextureColor> block = stackalloc TextureColor[16];
 int colorOffset = useAlpha ? 4 : 0;
 
-for(int blockY = 0; blockY < blocksPerCol; blockY++)
+for(int col = 0; col < blocksPerCol; col++)
 {
 
-for(int blockX = 0; blockX < blocksPerRow; blockX++)
+for(int row = 0; row < blocksPerRow; row++)
 {
-int blockIndex = blockY * blocksPerRow + blockX;
+int blockIndex = col * blocksPerRow + row;
 var outBlock = colorInfo.Slice(blockIndex * blockSize, blockSize);
 
 for(int i = 0; i < TILE_SIZE; i++)
 
 for(int j = 0; j < TILE_SIZE; j++)
 {
-int srcX = blockX * TILE_SIZE + j;
-int srcY = blockY * TILE_SIZE + i;
+int srcX = row * TILE_SIZE + j;
+int srcY = col * TILE_SIZE + i;
 
 bool shouldCopy = srcX < width && srcY < height;
 
@@ -405,12 +405,12 @@ TraceLogger.WriteActionStart("Writing pixels...");
 
 int colorOffset = useAlpha ? 4 : 0;
 
-for(int blockY = 0; blockY < blocksPerCol; blockY++)
+for(int col = 0; col < blocksPerCol; col++)
 {
 
-for(int blockX = 0; blockX < blocksPerRow; blockX++)
+for(int row = 0; row < blocksPerRow; row++)
 {
-int blockIndex = blockY * blocksPerRow + blockX;
+int blockIndex = col * blocksPerRow + row;
 var blockData = rawBytes.Slice(blockIndex * bytesPerBlock, bytesPerBlock);
 
 var currBlock = MemoryMarshal.Cast<byte, ushort>(blockData);
@@ -440,11 +440,11 @@ for(int i = 0; i < TILE_SIZE; i++)
 	
 for(int j = 0; j < TILE_SIZE; j++)
 {
-int row = blockY * TILE_SIZE + i;
-int col = blockX * TILE_SIZE + j;
+int y = col * TILE_SIZE + i;
+int x = row * TILE_SIZE + j;
 
-if(col + j < width && row + i < height)
-pixels[row * width + col] = block[(i << 2) | j];
+if(x < width && y < height)
+pixels[y * width + x] = block[(i << 2) | j];
 
 }
 
