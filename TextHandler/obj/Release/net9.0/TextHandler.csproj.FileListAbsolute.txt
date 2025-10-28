@@ -1,0 +1,13 @@
+X:\BloomingSdk\Libs\TextHandler\Compiled\Release\net9.0\TextHandler.deps.json
+X:\BloomingSdk\Libs\TextHandler\Compiled\Release\net9.0\TextHandler.dll
+X:\BloomingSdk\Libs\TextHandler\Compiled\Release\net9.0\BlossomLib.dll
+X:\BloomingSdk\Libs\TextHandler\Compiled\Release\net9.0\NetworkMgr.dll
+X:\BloomingSdk\Libs\TextHandler\Compiled\Release\net9.0\SexyParsers.dll
+X:\BloomingSdk\Libs\TextHandler\Compiled\Release\net9.0\SexyCryptor.dll
+X:\BloomingSdk\Libs\TextHandler\obj\Release\net9.0\TextHandler.csproj.AssemblyReference.cache
+X:\BloomingSdk\Libs\TextHandler\obj\Release\net9.0\TextHandler.GeneratedMSBuildEditorConfig.editorconfig
+X:\BloomingSdk\Libs\TextHandler\obj\Release\net9.0\TextHandler.csproj.CoreCompileInputs.cache
+X:\BloomingSdk\Libs\TextHandler\obj\Release\net9.0\TextHand.5B7866E3.Up2Date
+X:\BloomingSdk\Libs\TextHandler\obj\Release\net9.0\TextHandler.dll
+X:\BloomingSdk\Libs\TextHandler\obj\Release\net9.0\refint\TextHandler.dll
+X:\BloomingSdk\Libs\TextHandler\obj\Release\net9.0\ref\TextHandler.dll
