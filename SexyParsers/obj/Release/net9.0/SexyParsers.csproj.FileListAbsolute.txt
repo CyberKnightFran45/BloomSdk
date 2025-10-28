@@ -1,0 +1,10 @@
+X:\BloomingSdk\Libs\SexyParsers\obj\Release\net9.0\SexyParsers.csproj.AssemblyReference.cache
+X:\BloomingSdk\Libs\SexyParsers\obj\Release\net9.0\SexyParsers.GeneratedMSBuildEditorConfig.editorconfig
+X:\BloomingSdk\Libs\SexyParsers\obj\Release\net9.0\SexyParsers.csproj.CoreCompileInputs.cache
+X:\BloomingSdk\Libs\SexyParsers\Compiled\Release\net9.0\SexyParsers.deps.json
+X:\BloomingSdk\Libs\SexyParsers\Compiled\Release\net9.0\SexyParsers.dll
+X:\BloomingSdk\Libs\SexyParsers\Compiled\Release\net9.0\BlossomLib.dll
+X:\BloomingSdk\Libs\SexyParsers\obj\Release\net9.0\SexyPars.CCD6AE3D.Up2Date
+X:\BloomingSdk\Libs\SexyParsers\obj\Release\net9.0\SexyParsers.dll
+X:\BloomingSdk\Libs\SexyParsers\obj\Release\net9.0\refint\SexyParsers.dll
+X:\BloomingSdk\Libs\SexyParsers\obj\Release\net9.0\ref\SexyParsers.dll
