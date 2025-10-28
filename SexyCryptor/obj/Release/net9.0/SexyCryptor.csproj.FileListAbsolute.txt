@@ -1,0 +1,10 @@
+X:\BloomingSdk\Libs\SexyCryptor\Compiled\Release\net9.0\SexyCryptor.deps.json
+X:\BloomingSdk\Libs\SexyCryptor\Compiled\Release\net9.0\SexyCryptor.dll
+X:\BloomingSdk\Libs\SexyCryptor\Compiled\Release\net9.0\BlossomLib.dll
+X:\BloomingSdk\Libs\SexyCryptor\obj\Release\net9.0\SexyCryptor.csproj.AssemblyReference.cache
+X:\BloomingSdk\Libs\SexyCryptor\obj\Release\net9.0\SexyCryptor.GeneratedMSBuildEditorConfig.editorconfig
+X:\BloomingSdk\Libs\SexyCryptor\obj\Release\net9.0\SexyCryptor.csproj.CoreCompileInputs.cache
+X:\BloomingSdk\Libs\SexyCryptor\obj\Release\net9.0\SexyCryp.36916830.Up2Date
+X:\BloomingSdk\Libs\SexyCryptor\obj\Release\net9.0\SexyCryptor.dll
+X:\BloomingSdk\Libs\SexyCryptor\obj\Release\net9.0\refint\SexyCryptor.dll
+X:\BloomingSdk\Libs\SexyCryptor\obj\Release\net9.0\ref\SexyCryptor.dll
