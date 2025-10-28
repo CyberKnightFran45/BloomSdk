@@ -129,14 +129,14 @@ max = new(maxR, maxG, maxB, maxA);
 
 // Init Packets
 
-private static void InitPackets(Span<PVRPacket> packets, TextureColor* pixels, int width, int blocksX,
-                                int blocksY, int blockWidth, bool useAlpha)
+private static void InitPackets(Span<PVRPacket> packets, TextureColor* pixels, int width, int blocksPerCol,
+                                int blocksPerRow, int blockWidth, bool useAlpha)
 {
 
-for(int row = 0; row < blocksY; row++)
+for(int row = 0; row < blocksPerRow; row++)
 {
 
-for(int col = 0; col < blocksX; col++)
+for(int col = 0; col < blocksPerCol; col++)
 {
 CalculateBoundingBox(pixels, width, col, row, blockWidth, out var min, out var max);
 
@@ -254,7 +254,7 @@ modulationData |= (modValue & (mask) ) << offset;
 // Calculate Block Modulation
 
 private static uint GetBlockMod(Span<PVRPacket> packets, TextureColor* pixels, int width,
-								int blocksX, int blocksY, int blockWidth, int bx, int by,
+								int blocksPerCol, int blocksPerRow, int blockWidth, int bx, int by,
                                 bool is2BPP, bool useAlpha)
 {
 uint modulationData = 0;
@@ -264,13 +264,13 @@ int dataOffset = by * WORD_HEIGHT * width + (bx * blockWidth);
 
 for(int py = 0; py < WORD_HEIGHT; py++)
 {
-int y0 = (by + ( (py < 2) ? -1 : 0) + blocksY) % blocksY;
-int y1 = (y0 + 1) % blocksY;
+int y0 = (by + ( (py < 2) ? -1 : 0) + blocksPerRow) % blocksPerRow;
+int y1 = (y0 + 1) % blocksPerRow;
 
 for(int px = 0; px < blockWidth; px++)
 {
-int x0 = (bx + ( (px < (blockWidth / 2) ) ? -1 : 0) + blocksX) % blocksX;
-int x1 = (x0 + 1) % blocksX;
+int x0 = (bx + ( (px < (blockWidth / 2) ) ? -1 : 0) + blocksPerCol) % blocksPerCol;
+int x1 = (x0 + 1) % blocksPerCol;
 
 GetPxMod(packets, pixels, width, x0, x1, y0, y1, dataOffset,
          px, py, factorIndex, is2BPP, useAlpha, ref modulationData);
@@ -285,19 +285,19 @@ return modulationData;
 
 // Set Modulations
 
-private static void SetModulations(Span<PVRPacket> packets, TextureColor* pixels, int width, int blocksX,
-                                   int blocksY, int blockWidth, bool is2BPP, bool useAlpha)
+private static void SetModulations(Span<PVRPacket> packets, TextureColor* pixels, int width, int blocksPerCol,
+                                   int blocksPerRow, int blockWidth, bool is2BPP, bool useAlpha)
 {
 
-for(int row = 0; row < blocksY; row++)
+for(int row = 0; row < blocksPerRow; row++)
 {
 
-for(int col = 0; col < blocksX; col++)
+for(int col = 0; col < blocksPerCol; col++)
 {
 int mortonIdx = Morton.GetIndex(col, row);
 ref var packet = ref packets[mortonIdx];
 
-uint modValue = GetBlockMod(packets, pixels, width, blocksX, blocksY,
+uint modValue = GetBlockMod(packets, pixels, width, blocksPerCol, blocksPerRow,
                             blockWidth, col, row, is2BPP, useAlpha);
 
 packet.ModulationData = modValue;
@@ -314,16 +314,16 @@ private static NativeMemoryOwner<PVRPacket> EncodeColor(TextureColor* pixels, in
 {
 int blockWidth = is2BPP ? 8 : 4;
 
-int blocksX = width / blockWidth;
-int blocksY = height / WORD_HEIGHT;
+int blocksPerCol = width / blockWidth;
+int blocksPerRow = height / WORD_HEIGHT;
 
-int totalBlocks = blocksX * blocksY;
+int totalBlocks = blocksPerCol * blocksPerRow;
 
 NativeMemoryOwner<PVRPacket> pOwner = new(totalBlocks);
 var packets = pOwner.AsSpan();
 
-InitPackets(packets, pixels, width, blocksX, blocksY, blockWidth, useAlpha);
-SetModulations(packets, pixels, width, blocksX, blocksY, blockWidth, is2BPP, useAlpha);
+InitPackets(packets, pixels, width, blocksPerCol, blocksPerRow, blockWidth, useAlpha);
+SetModulations(packets, pixels, width, blocksPerCol, blocksPerRow, blockWidth, is2BPP, useAlpha);
 
 return pOwner;
 }
@@ -393,29 +393,25 @@ byte r, g, b, a;
 if(isOpaque)
 {
 var redMask = (int)( (flags & 0x7c00) >> 10);
-r = ExpandBits(redMask, 5);
-
 var greenMask = (int)( (flags & 0x03e0) >> 5);
-g = ExpandBits(greenMask, 5);
-
 var blueMask = (int)(flags & 0x001f);
-b = ExpandBits(blueMask, 5);
 
+r = ExpandBits(redMask, 5);
+g = ExpandBits(greenMask, 5);
+b = ExpandBits(blueMask, 5);
 a = 255;
 }
 
 else
 {
 var redMask = (int)( (flags & 0x0f00) >> 8);
-r = ExpandBits(redMask, 4);
-
 var greenMask = (int)( (flags & 0x00f0) >> 4);
-g = ExpandBits(greenMask, 4);
-
 var blueMask = (int)(flags & 0x000f);
-b = ExpandBits(blueMask, 4);
-
 var alphaMask = (int)( (flags & 0x7000) >> 12);
+
+r = ExpandBits(redMask, 4);
+g = ExpandBits(greenMask, 4);
+b = ExpandBits(blueMask, 4);
 a = ExpandBits(alphaMask, 3);
 }
 
@@ -559,15 +555,15 @@ private static void DecodeColor(ReadOnlySpan<PVRWord> encoded, TextureColor* pla
 {
 int wordWidth = is2BPP ? 8 : 4;
 
-int blocksX = width / wordWidth;
-int blocksY = height / WORD_HEIGHT;
+int blocksPerCol = width / wordWidth;
+int blocksPerRow = height / WORD_HEIGHT;
 
-for(int row = 0; row < blocksY; row++)
+for(int row = 0; row < blocksPerRow; row++)
 {
 
-for(int col = 0; col < blocksX; col++)
+for(int col = 0; col < blocksPerCol; col++)
 {
-int wordIndex = row * blocksX + col;
+int wordIndex = row * blocksPerCol + col;
 
 var word = encoded[wordIndex];
 var flags = word.Flags;
@@ -598,17 +594,17 @@ plain[pxOffset] = finalColor;
 
 // Sort PVR Words from Morton to Linear
 
-private static void SortWords(Span<PVRWord> words, int blocksX, int blocksY)
+private static void SortWords(Span<PVRWord> words, int blocksPerCol, int blocksPerRow)
 {
 using NativeMemoryOwner<PVRWord> lOwner = new(words.Length);
 var linearWords = lOwner.AsSpan();
 
-for(int row = 0; row < blocksY; row++)
+for(int row = 0; row < blocksPerRow; row++)
 	
-for(int col = 0; col < blocksX; col++)
+for(int col = 0; col < blocksPerCol; col++)
 {
 int mortonIdx = Morton.GetIndex(col, row);
-int linearIdx = row * blocksX + col;
+int linearIdx = row * blocksPerCol + col;
 
 linearWords[linearIdx] = words[mortonIdx];
 }
@@ -630,10 +626,10 @@ TraceLogger.WriteActionStart("Reading raw data...");
 
 int blockWidth = is2BPP ? 8 : 4;
 
-int blocksX = width / blockWidth;
-int blocksY = height / WORD_HEIGHT;
+int blocksPerCol = width / blockWidth;
+int blocksPerRow = height / WORD_HEIGHT;
 
-int totalBlocks = blocksX * blocksY;
+int totalBlocks = blocksPerCol * blocksPerRow;
 
 int bufferSize = totalBlocks * 8;
 using var rOwner = reader.ReadPtr(bufferSize, endian);
@@ -644,7 +640,7 @@ var words = MemoryMarshal.Cast<byte, PVRWord>(rawBytes);
 TraceLogger.WriteActionEnd();
 
 TraceLogger.WriteActionStart("Sorting blocks...");
-SortWords(words, blocksX, blocksY);
+SortWords(words, blocksPerCol, blocksPerRow);
 
 TraceLogger.WriteActionEnd();
 
