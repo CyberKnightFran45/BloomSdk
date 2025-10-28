@@ -140,29 +140,25 @@ byte r, g, b, a;
 if(OpaqueModeA)
 {
 int redMask = flags >> 9;
-r = ExpandBits(redMask);
-
 int greenMask = (flags >> 4) & 0x1F;
-g = ExpandBits(greenMask);
-
 int blueMask = flags & 0xF;
-b = UnpackBits(blueMask);
 
+r = ExpandBits(redMask);
+g = ExpandBits(greenMask);
+b = UnpackBits(blueMask);
 a = 255;
 }
 
 else
 {
 int redMask = (flags >> 7) & 0xF;
-r = UnpackBits(redMask);
-
 int greenMask = (flags >> 3) & 0xF;
-g = UnpackBits(greenMask);
-
 int blueMask = flags & 0x7;
-b = ReplicateBits(blueMask);
-
 int alphaMask = useAlpha ? (flags >> 11) & 0x7 : 31;
+
+r = UnpackBits(redMask);
+g = UnpackBits(greenMask);
+b = ReplicateBits(blueMask);
 a = ReplicateBits(alphaMask);
 }
 
