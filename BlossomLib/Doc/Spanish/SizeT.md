@@ -29,8 +29,10 @@ Un `string` con el tamaño formateado seguido de su unidad.
 
 ### Ejemplo
 
-```long size = 150000;
-string readable = SizeT.FormatSize(size); // "1.5 MB"```
+```csharp
+long size = 150000;
+string readable = SizeT.FormatSize(size); // "1.5 MB"
+```
 
 --------------------------------------------------------
 
@@ -49,7 +51,9 @@ Un `long` que representa la longitud alineada (igual o superior a la original).
 
 ### Ejemplo
 
-```long padded = SizeT.GetPaddedLen(30, 16); // 32```
+```csharp
+long padded = SizeT.GetPaddedLen(30, 16); // 32
+```
 
 -----------------------------------------------------
 
@@ -68,7 +72,9 @@ Un `long` que representa la cantidad de bytes necesarios para llegar al múltipl
 
 ### Ejemplo
 
-```long padding = SizeT.GetPadding(30, 16); // 2```
+```csharp
+long padding = SizeT.GetPadding(30, 16); // 2
+```
 
 ---------------------------------------------------
 
@@ -87,7 +93,9 @@ Un `long` que representa la cantidad total de bloques requeridos.
 
 ### Ejemplo
 
-```long blocks = SizeT.GetBlockCount(30, 16); // 2```
+```csharp
+long blocks = SizeT.GetBlockCount(30, 16); // 2
+```
 
 -----------------------------------------------------
 
@@ -106,4 +114,6 @@ Un `long` que representa la longitud original antes de aplicar padding.
 
 ### Ejemplo
 
-```long original = SizeT.GetOriginaLen(32, 16); // 30```
+```csharp
+long original = SizeT.GetOriginaLen(32, 16); // 30
+```
