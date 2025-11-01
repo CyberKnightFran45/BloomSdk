@@ -8,7 +8,7 @@ Aquí se documentan únicamente los miembros públicos de la DLL con su respecti
 
 Espacio de nombres global con utilidades reutilizables.
 
-- [SizeT](BlossomLib/Docs/Spanish/SizeT.md)
+- [SizeT](Docs/Spanish/Global/SizeT.md)
 
 ### Helpers
 
@@ -28,6 +28,7 @@ Definiciones propias de la biblioteca. Incluye clases, estructuras y enums.
 ### Utils
 
 Utilidades del Framework.
+
 
 
 
