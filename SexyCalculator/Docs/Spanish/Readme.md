@@ -6,10 +6,11 @@ Aquí se documentan únicamente los miembros públicos de la DLL con su respecti
 
 Autores: Fran V.
 
-- [BinaryConverter]()
+- [Binary Converter](https://github.com/CyberKnightFran45/BloomSdk/blob/f61db88527d40eeb90e98950dc3f8813edea8772/SexyCalculator/Docs/Spanish/Source/BinaryConverter.md)
 
-- [IntGuard]()
+- [IntGuard](https://github.com/CyberKnightFran45/BloomSdk/blob/f61db88527d40eeb90e98950dc3f8813edea8772/SexyCalculator/Docs/Spanish/Source/IntGuard.md)
 
-- [UnixTimestamp]()
+- [Unix Timestamp](https://github.com/CyberKnightFran45/BloomSdk/blob/f61db88527d40eeb90e98950dc3f8813edea8772/SexyCalculator/Docs/Spanish/Source/UnixTimestamp.md)
 
-- [VarInt]()
+- [VarInt](https://github.com/CyberKnightFran45/BloomSdk/blob/f61db88527d40eeb90e98950dc3f8813edea8772/SexyCalculator/Docs/Spanish/Source/VarInt.md)
+
