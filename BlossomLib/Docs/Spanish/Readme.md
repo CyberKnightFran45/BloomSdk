@@ -4,7 +4,7 @@ Es la librería núcleo del proyecto. Proporciona clases destinadas para el mane
 
 Aquí se documentan únicamente los miembros públicos de la DLL con su respectivo enlace, ordenados de acorde a la estructura del proyecto.
 
-Autores: Fran V.
+Autores: FranZ
 
 ## 🔶 Global
 
@@ -243,5 +243,6 @@ Algoritmos para cifrado y autentificación de datos.
 - [Crc32](https://github.com/CyberKnightFran45/BloomSdk/blob/23e83fb17792c0d6c95982fcef5238b35759a5a8/BlossomLib/Docs/Spanish/Modules/Security/Digest/Crc32.md)
 
 - [GenericDigest](https://github.com/CyberKnightFran45/BloomSdk/blob/23e83fb17792c0d6c95982fcef5238b35759a5a8/BlossomLib/Docs/Spanish/Modules/Security/Digest/GenericDigest.md)
+
 
 
